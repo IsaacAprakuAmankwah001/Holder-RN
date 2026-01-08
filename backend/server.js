@@ -18,6 +18,9 @@ async function initDBConnection() {
         category VARCHAR(255) NOT NULL,
         created_at DATE NOT NULL DEFAULT CURRENT_DATE
         );`
+        // DECIMAL(10,2) a fixed-pointer number with:
+        // 10 digits total & 2 digits after the decimal point so max value is 99999999.99
+    console.log("Database initialized successfully");
   } catch (error) {
     console.error('Error initializing DB:', error);
     process.exit(1) // status code 1 means failure, 0 for success
