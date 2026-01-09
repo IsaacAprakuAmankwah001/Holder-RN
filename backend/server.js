@@ -5,6 +5,8 @@ import { db } from './config/db.js';
 dotenv.config();
 
 const app = express();
+//built-in middleware
+app.use(express.json())
 
 const PORT = process.env.PORT || 5001;
 
@@ -27,10 +29,24 @@ async function initDBConnection() {
   }
 }
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.post("/api/transactions", async(req, res)=>{
+  try{
+    const{title, amount, category, user_id} = req.body;
 
+    if (!title || !category || !user_id || amount == undefined) {
+      return res.status(400).json({message: "All fields are required"});
+    }
+
+    const transaction =  await db`
+      INSERT INTO transactions(user_id, title, amount, category)
+      VALUES(${user_id}, ${title}, ${amount}, ${category})
+      RETURNING *
+    `
+  } catch(error){
+    console.log("Error creating a transaction: ", error);
+    res.status(500).json({message: "Internal Server Error"})
+  }
+});
 initDBConnection().then(()=>{
     app.listen(PORT, () => {
         console.log('Server is up and running on PORT:', PORT);
