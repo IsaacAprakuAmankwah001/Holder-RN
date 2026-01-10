@@ -42,6 +42,8 @@ app.post("/api/transactions", async(req, res)=>{
       VALUES(${user_id}, ${title}, ${amount}, ${category})
       RETURNING *
     `
+    console.log(transaction);
+    res.status(201).json(transaction[0])
   } catch(error){
     console.log("Error creating a transaction: ", error);
     res.status(500).json({message: "Internal Server Error"})
