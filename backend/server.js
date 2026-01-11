@@ -46,7 +46,7 @@ app.post("/api/transactions", async(req, res)=>{
     res.status(201).json(transaction[0])
   } catch(error){
     console.log("Error creating the transaction: ", error);
-    res.status(500).json({message: "Internal Server Error"})
+    res.status(500).json({message: "Internal Server Error"});
   }
 });
 
@@ -60,9 +60,31 @@ app.get("/api/transactions/:userId", async(req, res)=>{
     res.status(200).json(transactions);
   } catch (error) {
     console.log("Error getting the transaction: ", error);
-    res.status(500).json({message: "Internal Server Error"})
+    res.status(500).json({message: "Internal Server Error"});
   }
 });
+
+app.delete("/api/transactions/:id", async(req, res)=>{
+  try {
+    const {id} = req.params;
+
+    if (isNaN(parseInt(id))) {
+      return res.status(400).json({ message: "Invalid Transaction ID"})
+    }
+    const output = await db`
+      DELETE FROM transactions WHERE id = ${id} RETURNING *
+    `
+
+    if (output.length === 0) {
+      return res.status(404).json({ message:"Transaction not found" });
+    }
+
+    res.status(200).json({ message: "Transaction deleted successfully" });
+  } catch (error) {
+    console.log("Error deleting the transaction: ", error);
+    res.status(500).json({message: "Internal Server Error"})
+  }
+})
 
 initDBConnection().then(()=>{
     app.listen(PORT, () => {
