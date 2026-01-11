@@ -45,10 +45,25 @@ app.post("/api/transactions", async(req, res)=>{
     console.log(transaction);
     res.status(201).json(transaction[0])
   } catch(error){
-    console.log("Error creating a transaction: ", error);
+    console.log("Error creating the transaction: ", error);
     res.status(500).json({message: "Internal Server Error"})
   }
 });
+
+app.get("/api/transactions/:userId", async(req, res)=>{
+  try {
+    const{userId} =  req.params;
+    
+    const transactions = await db`
+      SELECT * FROM transactions WHERE user_id = ${userId} ORDER BY created_at DESC
+    `;
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.log("Error getting the transaction: ", error);
+    res.status(500).json({message: "Internal Server Error"})
+  }
+});
+
 initDBConnection().then(()=>{
     app.listen(PORT, () => {
         console.log('Server is up and running on PORT:', PORT);
