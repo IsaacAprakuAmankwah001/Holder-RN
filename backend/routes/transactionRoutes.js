@@ -3,7 +3,7 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/api/transactions", async(req, res)=>{
+router.post("/", async(req, res)=>{
   try{
     const{title, amount, category, user_id} = req.body;
 
@@ -24,7 +24,7 @@ router.post("/api/transactions", async(req, res)=>{
   }
 });
 
-router.get("/api/transactions/:userId", async(req, res)=>{
+router.get("/:userId", async(req, res)=>{
   try {
     const{userId} =  req.params;
     
@@ -38,7 +38,7 @@ router.get("/api/transactions/:userId", async(req, res)=>{
   }
 });
 
-router.delete("/api/transactions/:id", async(req, res)=>{
+router.delete("/:id", async(req, res)=>{
   try {
     const {id} = req.params;
 
@@ -60,7 +60,7 @@ router.delete("/api/transactions/:id", async(req, res)=>{
   }
 })
 
-router.get("/api/transactions/summary/:userId", async(req,res)=>{
+router.get("/:userId", async(req,res)=>{
   try {
     const {userId} = req.params;
 
