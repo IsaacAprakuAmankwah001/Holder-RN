@@ -11,6 +11,10 @@ const app = express();
 app.use(rateLimiter);
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Server is running!' });
+});
+
 const PORT = process.env.PORT || 5001;
 
 async function initDBConnection() {
