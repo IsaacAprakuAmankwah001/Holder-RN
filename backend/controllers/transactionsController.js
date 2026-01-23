@@ -1,5 +1,5 @@
-async function getTransactionByUserId() {
-    async(req, res)=>{
+export async function getTransactionByUserId() {
+    
         try {
             const{userId} =  req.params;
     
@@ -11,5 +11,4 @@ async function getTransactionByUserId() {
             console.log("Error getting the transaction: ", error);
             res.status(500).json({message: "Internal Server Error"});
         }
-    }
 }
