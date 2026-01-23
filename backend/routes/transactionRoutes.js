@@ -1,4 +1,6 @@
 import express from "express";
+import {db} from "../config/db.js";
+import {getTransactionByUserId} from "../controllers/transactionsController.js"
 
 
 const router = express.Router();
@@ -24,19 +26,7 @@ router.post("/", async(req, res)=>{
   }
 });
 
-router.get("/:userId", async(req, res)=>{
-  try {
-    const{userId} =  req.params;
-    
-    const transactions = await db`
-      SELECT * FROM transactions WHERE user_id = ${userId} ORDER BY created_at DESC
-    `;
-    res.status(200).json(transactions);
-  } catch (error) {
-    console.log("Error getting the transaction: ", error);
-    res.status(500).json({message: "Internal Server Error"});
-  }
-});
+router.get("/:userId", getTransactionByUserId);
 
 router.delete("/:id", async(req, res)=>{
   try {
