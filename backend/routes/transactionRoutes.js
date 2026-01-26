@@ -12,7 +12,6 @@ router.post("/", async(req, res)=>{
     if (!title || !category || !user_id || amount == undefined) {
       return res.status(400).json({message: "All fields are required"});
     }
-
     const transaction =  await db`
       INSERT INTO transactions(user_id, title, amount, category)
       VALUES(${user_id}, ${title}, ${amount}, ${category})
