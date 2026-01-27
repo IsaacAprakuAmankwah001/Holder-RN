@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5001;
 
 async function initDBConnection() {
   try {
-    await db `CREATE TABLE IF NOT EXISTS transactions(
+    await db`CREATE TABLE IF NOT EXISTS transactions(
         id SERIAL PRIMARY KEY,
         user_id VARCHAR(255) NOT NULL,
         title VARCHAR(255) NOT NULL,
