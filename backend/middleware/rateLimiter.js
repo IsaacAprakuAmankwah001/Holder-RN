@@ -6,8 +6,8 @@ const rateLimiter = async (req,res, next) => {
 
         if (!success) {
             return res.status(429).json({message: "Too many requests, Try again later"});
-            next();
         }
+        next();
     } catch (error) {
         console.log("Rate limiter error: ",error);
         next(error);
