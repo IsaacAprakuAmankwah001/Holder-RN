@@ -1,6 +1,6 @@
 import express from "express";
 import {db} from "../config/db.js";
-import {createTransaction, getTransactionByUserId} from "../controllers/transactionsController.js"
+import {createTransaction, deleteTransaction, getTransactionByUserId} from "../controllers/transactionsController.js"
 
 
 const router = express.Router();
@@ -9,27 +9,7 @@ router.post("/", createTransaction);
 
 router.get("/:userId", getTransactionByUserId);
 
-router.delete("/:id", async(req, res)=>{
-  try {
-    const {id} = req.params;
-
-    if (isNaN(parseInt(id))) {
-      return res.status(400).json({ message: "Invalid Transaction ID"})
-    }
-    const output = await db`
-      DELETE FROM transactions WHERE id = ${id} RETURNING *
-    `
-
-    if (output.length === 0) {
-      return res.status(404).json({ message:"Transaction not found" });
-    }
-
-    res.status(200).json({ message: "Transaction deleted successfully" });
-  } catch (error) {
-    console.log("Error deleting the transaction: ", error);
-    res.status(500).json({message: "Internal Server Error"});
-  }
-})
+router.delete("/:id", deleteTransaction)
 
 router.get("/:userId", async(req,res)=>{
   try {
